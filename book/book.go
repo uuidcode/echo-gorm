@@ -8,11 +8,12 @@ import (
 	"github.com/uuidcode/coreutil"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 )
 
 type Book struct {
-	BookId      int64 `gorm:"PRIMARY_KEY" json:"bookId,string"`
+	BookId      int64 `gorm:"PRIMARY_KEY"`
 	UserId      int64
 	Name        string
 	RegDatetime time.Time
@@ -36,6 +37,21 @@ func Index(c echo.Context) error {
 	return c.Render(http.StatusOK, "book/index", echo.Map{
 		"bookList": bookList,
 	})
+}
+
+func Get(c echo.Context) error {
+	bookIdValue := c.Param("bookId")
+	webContext := context.GetWebContext(c)
+
+	var book Book
+	bookId, err := strconv.ParseInt(bookIdValue, 10, 64)
+	coreutil.CheckErr(err)
+
+	webContext.DB.First(&book, Book{
+		BookId: bookId,
+	})
+
+	return c.JSON(http.StatusOK, &book)
 }
 
 func Form(c echo.Context) error {

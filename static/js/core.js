@@ -60,7 +60,7 @@ var core = {
 
             if (type == 'DELETE') {
                 var id = $target.attr('data-id-name');
-                data[id] = $target.attr('data-id');
+                data[id] = parseInt($target.attr('data-id'), 10);
             } else {
                 if (option.data) {
                     data = option.data();

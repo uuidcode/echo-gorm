@@ -72,6 +72,7 @@ func main() {
 	e.File("/favicon.ico", "static/ico/favicon.ico")
 
 	e.GET("/book", book.Index)
+	e.GET("/book/:bookId", book.Get)
 	e.POST("/book", book.Save)
 	e.DELETE("/book", book.Remove)
 	e.GET("/book/form", book.Form)
