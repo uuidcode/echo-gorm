@@ -2,14 +2,6 @@
 
 
 [[projects]]
-  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
-  name = "github.com/dgrijalva/jwt-go"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
-  version = "v3.2.0"
-
-[[projects]]
   branch = "master"
   digest = "1:95ff191ec714cb3bfd7a136b04b0f3148f4aaf7accdad9d3b69f27f5eb136548"
   name = "github.com/foolin/echo-template"
@@ -42,24 +34,19 @@
   revision = "04140366298a54a039076d798123ffa108fff46c"
 
 [[projects]]
-  digest = "1:87f801436ec4799e0e043ab348ff9f3e95b1b3761138158f0950ac67695cc272"
+  digest = "1:26971a24734a1b911111711f981ffc7463361b36483456f33da623570b7d214c"
   name = "github.com/labstack/echo"
-  packages = [
-    ".",
-    "middleware",
-  ]
+  packages = ["."]
   pruneopts = "UT"
   revision = "6d227dfea4d2e52cb76856120b3c17f758139b4e"
   version = "3.3.5"
 
 [[projects]]
-  digest = "1:568171fc14a3d819b112c3e219d351ea7b05e8dad7935c4168c6b3373244a686"
+  digest = "1:faee5b9f53eb1ae4eb04708c040c8c4dd685ce46509671e57a08520a15c54368"
   name = "github.com/labstack/gommon"
   packages = [
-    "bytes",
     "color",
     "log",
-    "random",
   ]
   pruneopts = "UT"
   revision = "d6898124de917583f5ff5592ef931d1dfe0ddc05"
@@ -82,12 +69,28 @@
   version = "v0.0.4"
 
 [[projects]]
+  branch = "master"
+  digest = "1:dd4b6b584a48d36fdff3301ff9e9e0330a7a2cabeda206be320be64accdca51f"
+  name = "github.com/plutov/echo-logrus"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "0df328ffad1a8970c1978ee89f56bf3836c48e7b"
+
+[[projects]]
   digest = "1:274f67cb6fed9588ea2521ecdac05a6d62a8c51c074c1fccc6a49a40ba80e925"
   name = "github.com/satori/go.uuid"
   packages = ["."]
   pruneopts = "UT"
   revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
   version = "v1.2.0"
+
+[[projects]]
+  digest = "1:d867dfa6751c8d7a435821ad3b736310c2ed68945d05b50fb9d23aee0540c8cc"
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3e01752db0189b9157070a0e1668a620f9a85da2"
+  version = "v1.0.6"
 
 [[projects]]
   branch = "master"
@@ -115,20 +118,24 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:dedf20eb0d3e8d6aa8a4d3d2fae248222b688ed528201995e152cc497899123c"
+  digest = "1:42c7e30272119bd61cee83d6448f31bcb408799a5e1802edc53cec1378e19941"
   name = "golang.org/x/crypto"
   packages = [
     "acme",
     "acme/autocert",
+    "ssh/terminal",
   ]
   pruneopts = "UT"
   revision = "0709b304e793a5edb4a2c0145f281ecdc20838a4"
 
 [[projects]]
   branch = "master"
-  digest = "1:a9e9a5da9c877870b0feb5975c1e30dddb236562f912e9e9b0515ac9465f951b"
+  digest = "1:7f4a61b989d94774dc61016b660cf8347f59eb0bed91a10b2f23fc72a38d45d4"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows",
+  ]
   pruneopts = "UT"
   revision = "ebe1bf3edb3325c393447059974de898d5133eb8"
 
@@ -148,7 +155,8 @@
     "github.com/go-sql-driver/mysql",
     "github.com/jinzhu/gorm",
     "github.com/labstack/echo",
-    "github.com/labstack/echo/middleware",
+    "github.com/plutov/echo-logrus",
+    "github.com/sirupsen/logrus",
     "github.com/uuidcode/coreutil",
   ]
   solver-name = "gps-cdcl"

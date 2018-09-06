@@ -2,7 +2,6 @@ package book
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/echo-gorm/context"
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
@@ -49,7 +48,7 @@ func Save(c echo.Context) error {
 	b, err := ioutil.ReadAll(webContext.Request().Body)
 	coreutil.CheckErr(err)
 
-	fmt.Println("Save", string(b))
+	c.Logger().Debug("save", string(b))
 
 	var book Book
 	err = json.Unmarshal(b, &book)
