@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{.title}}</title>
+</head>
+<body>
+{{block "head" .}}
+<h1>Head</h1>
+{{end}}
+<hr>
+{{template "content" .}}
+<hr>
+{{block "foot" .}}
+<h1>Foot</h1>
+{{end}}
+</body>
+</html>
