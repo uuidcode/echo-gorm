@@ -3,7 +3,6 @@ package book
 import (
 	"encoding/json"
 	"github.com/echo-gorm/context"
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
 	"io/ioutil"
@@ -22,10 +21,6 @@ type Book struct {
 
 func (Book) TableName() string {
 	return "book"
-}
-
-func (book *Book) Save(db *gorm.DB) {
-	db.Create(book)
 }
 
 func Index(c echo.Context) error {
