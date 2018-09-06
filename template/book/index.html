@@ -1,7 +1,8 @@
 {{define "content"}}
-<script src="/static/js/book.js"></script>
 <div class="container-fluid" style="margin:10px 0px 10px 0px">
-    <button id="addButton" type="button" class="btn btn-primary">Add</button>
+    <button type="button"
+            data-url="/book/form"
+            class="btn btn-primary openModalButton">Add</button>
 </div>
 <div class="container-fluid">
     <table class="table">
@@ -9,6 +10,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -16,6 +18,14 @@
             <tr>
                 <th scope="row">{{.BookId}}</th>
                 <td>{{.Name}}</td>
+                <td>
+                    <button type="button"
+                            data-type="DELETE"
+                            data-url="/book"
+                            data-id-name="bookId"
+                            data-id="{{.BookId}}"
+                            class="btn btn-primary actionButton">Remove</button>
+                </td>
             </tr>
         {{end}}
         </tbody>

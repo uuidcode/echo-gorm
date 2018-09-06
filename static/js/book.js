@@ -6,7 +6,7 @@ var book = {
             url: '/book/form'
         });
 
-        core.initSend({
+        core.initAction({
             buttonSelector: '#saveButton',
             url: '/book',
             data: function () {

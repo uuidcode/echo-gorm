@@ -12,7 +12,7 @@ import (
 )
 
 type Book struct {
-	BookId      int64 `gorm:"PRIMARY_KEY"`
+	BookId      int64 `gorm:"PRIMARY_KEY" json:"bookId,string"`
 	UserId      int64
 	Name        string
 	RegDatetime time.Time
@@ -42,22 +42,34 @@ func Form(c echo.Context) error {
 	return c.Render(http.StatusOK, "book/form.html", echo.Map{})
 }
 
-func Save(c echo.Context) error {
-	webContext := context.GetWebContext(c)
-
+func getBook(webContext *context.WebContext) Book {
 	b, err := ioutil.ReadAll(webContext.Request().Body)
 	coreutil.CheckErr(err)
 
-	c.Logger().Debug("save", string(b))
+	webContext.Logger().Debug("book", string(b))
 
 	var book Book
 	err = json.Unmarshal(b, &book)
 	coreutil.CheckErr(err)
 
+	return book
+}
+
+func Save(c echo.Context) error {
+	webContext := context.GetWebContext(c)
+	book := getBook(webContext)
 	book.RegDatetime = time.Now()
 	book.ModDatetime = time.Now()
 	book.UserId = 1
 	webContext.DB.Create(&book)
 
 	return c.JSON(http.StatusOK, book)
+}
+
+func Remove(c echo.Context) error {
+	webContext := context.GetWebContext(c)
+	book := getBook(webContext)
+	webContext.DB.Delete(book)
+
+	return c.JSON(http.StatusOK, book.BookId)
 }
