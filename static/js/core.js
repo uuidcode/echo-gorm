@@ -41,7 +41,7 @@ var core = {
     },
 
     /**
-     * buttonSelector: 데이터를 전송송하는 버튼
+     * buttonSelector: 데이터를 전송하는 버튼
      * data: 저장할 데이터는 가져오는 함수
      *   data가 없으면 button.attr('data-function')를 함수로 사용합니다.
      *   button.attr('data-function')가 없으며 해당 버튼을 포함하고 있는 modal의 form 요소를 데이터를 생성합니다.
@@ -60,7 +60,7 @@ var core = {
 
             if (type == 'DELETE') {
                 var id = $target.attr('data-id-name');
-                data[id] = parseInt($target.attr('data-id'), 10);
+                data[id] = core.getValue($target);
             } else {
                 if (option.data) {
                     data = option.data();
@@ -96,19 +96,23 @@ var core = {
         $modal.find('input,select,textarea')
             .map(function () {
                 var id = $(this).attr('id');
-                var dataType = $(this).attr('data-type') || 'STRING';
-                var value = $(this).val();
-
-                if (dataType == 'NUMBER') {
-                    value = parseInt(value);
-                }
-
-                data[id] = value;
+                data[id] = core.getValue($(this));
             });
 
         console.log('data', data);
 
         return data;
+    },
+
+    getValue: function ($target) {
+        var dataType = $target.attr('data-type') || 'STRING';
+        var value = $target.val();
+
+        if (dataType == 'NUMBER') {
+            return parseInt(value, 10);
+        }
+
+        return value;
     },
 
     init: function () {
