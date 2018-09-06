@@ -16,5 +16,7 @@ func TestBook(t *testing.T) {
 
 	defer db.Close()
 
-	db.CreateTable(&Book{})
+	var book Book
+	db.DropTable(&book)
+	db.CreateTable(&book)
 }

@@ -13,8 +13,8 @@ import (
 )
 
 type Book struct {
-	BookId      int
-	UserId      int
+	BookId      int64 `gorm:"PRIMARY_KEY"`
+	UserId      int64
 	Name        string
 	RegDatetime time.Time
 	ModDatetime time.Time
