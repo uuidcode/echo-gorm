@@ -1,9 +1,9 @@
 package book
 
 import (
-	"time"
-	"net/http"
 	"github.com/labstack/echo"
+	"net/http"
+	"time"
 )
 
 type Book struct {
@@ -19,7 +19,9 @@ func (Book) TableName() string {
 }
 
 func Index(context echo.Context) error {
-	return context.Render(http.StatusOK, "book/index", echo.Map{
+	return context.Render(http.StatusOK, "book/index", echo.Map{})
+}
 
-	})
+func Form(context echo.Context) error {
+	return context.Render(http.StatusOK, "book/form.html", echo.Map{})
 }

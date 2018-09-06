@@ -20,6 +20,7 @@ func main() {
 	e.Static("/static", "static")
 	e.File("/favicon.ico", "static/ico/favicon.ico")
 	e.GET("/book", book.Index)
+	e.GET("/book/form", book.Form)
 
 	e.Start(":17004")
 }
