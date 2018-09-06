@@ -96,7 +96,14 @@ var core = {
         $modal.find('input,select,textarea')
             .map(function () {
                 var id = $(this).attr('id');
-                data[id] = $(this).val();
+                var dataType = $(this).attr('data-type') || 'STRING';
+                var value = $(this).val();
+
+                if (dataType == 'NUMBER') {
+                    value = parseInt(value);
+                }
+
+                data[id] = value;
             });
 
         console.log('data', data);
