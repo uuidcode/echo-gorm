@@ -105,10 +105,10 @@ var core = {
     },
 
     getValue: function ($target) {
-        var dataType = $target.attr('data-type') || 'STRING';
-        var value = $target.val();
+        var dataValueType = $target.attr('data-value-type') || 'STRING';
+        var value = $target.attr('data-id-value') || $target.val();
 
-        if (dataType == 'NUMBER') {
+        if (dataValueType == 'NUMBER') {
             return parseInt(value, 10);
         }
 

@@ -39,21 +39,6 @@ func Index(c echo.Context) error {
 	})
 }
 
-func Get(c echo.Context) error {
-	bookIdValue := c.Param("bookId")
-	webContext := context.GetWebContext(c)
-
-	var book Book
-	bookId, err := strconv.ParseInt(bookIdValue, 10, 64)
-	coreutil.CheckErr(err)
-
-	webContext.DB.First(&book, Book{
-		BookId: bookId,
-	})
-
-	return c.JSON(http.StatusOK, &book)
-}
-
 func Form(c echo.Context) error {
 	return c.Render(http.StatusOK, "book/form.html", echo.Map{})
 }
@@ -85,7 +70,25 @@ func Save(c echo.Context) error {
 func Remove(c echo.Context) error {
 	webContext := context.GetWebContext(c)
 	book := getBook(webContext)
-	webContext.DB.Delete(book)
+
+	webContext.DB.Delete(&book, Book{
+		BookId: book.BookId,
+	})
 
 	return c.JSON(http.StatusOK, book.BookId)
+}
+
+func Get(c echo.Context) error {
+	bookIdValue := c.Param("bookId")
+	webContext := context.GetWebContext(c)
+
+	var book Book
+	bookId, err := strconv.ParseInt(bookIdValue, 10, 64)
+	coreutil.CheckErr(err)
+
+	webContext.DB.First(&book, Book{
+		BookId: bookId,
+	})
+
+	return c.JSON(http.StatusOK, &book)
 }
