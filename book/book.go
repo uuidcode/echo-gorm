@@ -1,18 +1,16 @@
 package book
 
 import (
-	"encoding/json"
 	"github.com/echo-gorm/context"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"time"
 )
 
 type Book struct {
-	BookId      int64 `gorm:"PRIMARY_KEY" form:"bookId" query:"bookId"`
+	BookId      int64 `gorm:"PRIMARY_KEY" json:"bookId" form:"bookId" query:"bookId"`
 	UserId      int64
 	Name        string
 	RegDatetime time.Time
@@ -53,22 +51,13 @@ func Form(c echo.Context) error {
 	return c.Render(http.StatusOK, "book/form.html", result)
 }
 
-func getBook(webContext *context.WebContext) *Book {
-	b, err := ioutil.ReadAll(webContext.Request().Body)
-	coreutil.CheckErr(err)
-
-	webContext.Logger().Debug("book", string(b))
-
-	var book Book
-	err = json.Unmarshal(b, &book)
-	coreutil.CheckErr(err)
-
-	return &book
-}
-
 func Post(c echo.Context) error {
 	webContext := context.GetWebContext(c)
-	book := getBook(webContext)
+
+	book := new(Book)
+	err := c.Bind(book)
+	coreutil.CheckErr(err)
+
 	book.RegDatetime = time.Now()
 	book.ModDatetime = time.Now()
 	book.UserId = 1
@@ -79,7 +68,10 @@ func Post(c echo.Context) error {
 
 func Put(c echo.Context) error {
 	webContext := context.GetWebContext(c)
-	book := getBook(webContext)
+
+	book := new(Book)
+	err := c.Bind(book)
+	coreutil.CheckErr(err)
 
 	newBook := new(Book)
 
@@ -95,7 +87,10 @@ func Put(c echo.Context) error {
 
 func Remove(c echo.Context) error {
 	webContext := context.GetWebContext(c)
-	book := getBook(webContext)
+
+	book := new(Book)
+	err := c.Bind(book)
+	coreutil.CheckErr(err)
 
 	webContext.DB.Delete(&book, Book{
 		BookId: book.BookId,

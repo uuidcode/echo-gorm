@@ -73,10 +73,10 @@ func main() {
 
 	e.GET("/book", book.Index)
 	e.GET("/book/:bookId", book.Get)
+	e.GET("/book/form", book.Form)
 	e.POST("/book", book.Post)
 	e.PUT("/book", book.Put)
 	e.DELETE("/book", book.Remove)
-	e.GET("/book/form", book.Form)
 
 	e.Start(":17004")
 }
