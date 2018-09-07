@@ -28,12 +28,12 @@ func customHTTPErrorHandler(err error, c echo.Context) {
 	c.Logger().Error(err)
 }
 
-func NewTestEcho() *echo.Echo {
+func TestEcho() *echo.Echo {
 	os.Chdir("..")
-	return NewEcho()
+	return Echo()
 }
 
-func NewEcho() *echo.Echo {
+func Echo() *echo.Echo {
 	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetOutput(os.Stdout)
 	logrus.SetFormatter(&logrus.JSONFormatter{})

@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	e := app.NewEcho()
+	e := app.Echo()
 	e.GET("/book", book.Index)
 	e.GET("/book/:bookId", book.Get)
 	e.GET("/book/form", book.Form)

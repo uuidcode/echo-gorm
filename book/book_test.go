@@ -18,7 +18,7 @@ func TestBook(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	e := app.NewTestEcho()
+	e := app.TestEcho()
 	req := httptest.NewRequest(echo.GET, "/book/2", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -35,7 +35,7 @@ func TestGet(t *testing.T) {
 }
 
 func TestForm(t *testing.T) {
-	e := app.NewTestEcho()
+	e := app.TestEcho()
 	req := httptest.NewRequest(echo.GET, "/book/form?bookId=2", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
