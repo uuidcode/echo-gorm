@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/echo-gorm/app"
-	"github.com/echo-gorm/book"
-	"github.com/echo-gorm/user"
+	"github.com/echo-gorm/model/book"
+	"github.com/echo-gorm/model/user"
 )
 
 func main() {

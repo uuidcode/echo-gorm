@@ -70,7 +70,7 @@ func Echo() *echo.Echo {
 	e.Static("/static", "static")
 	e.File("/favicon.ico", "static/ico/favicon.ico")
 
-	logger.Debug("Echo is ready")
+	logger.Debug("Echo is ready: http://localhost:17004/book")
 
 	return e
 }

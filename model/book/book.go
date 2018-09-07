@@ -2,6 +2,7 @@ package book
 
 import (
 	"github.com/echo-gorm/database"
+	"github.com/echo-gorm/model/page"
 	"github.com/echo-gorm/util"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
@@ -23,14 +24,24 @@ func (Book) TableName() string {
 
 func Index(c echo.Context) error {
 	var bookList []Book
+	book := new(Book)
+	err := c.Bind(book)
+	util.CheckErr(err)
 
-	offset, limit := util.GetOffsetAndLimit(c)
-	database.DB.Offset(offset).Limit(limit).Find(&bookList)
+	var totalCount int64
+	database.DB.Model(book).Count(&totalCount)
+
+	p := page.NewWithContext(c, totalCount)
+	database.DB.Offset(p.Offset).Limit(p.Limit).Find(&bookList)
 
 	c.Logger().Debug(coreutil.ToJson(bookList))
 
+	pageUrl := util.GetUrlAndRemovePageParam(c.Request())
+
 	return c.Render(http.StatusOK, "book/index", echo.Map{
 		"bookList": bookList,
+		"page":     p,
+		"url":      pageUrl,
 	})
 }
 
