@@ -1,11 +1,10 @@
 package book
 
 import (
-	"github.com/echo-gorm/context"
+	"github.com/echo-gorm/database"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -22,10 +21,11 @@ func (Book) TableName() string {
 }
 
 func Index(c echo.Context) error {
-	webContext := context.GetWebContext(c)
 	var bookList []Book
 
-	webContext.DB.Find(&bookList)
+	database.DB.Find(&bookList)
+
+	c.Logger().Debug(coreutil.ToJson(bookList))
 
 	return c.Render(http.StatusOK, "book/index", echo.Map{
 		"bookList": bookList,
@@ -33,7 +33,6 @@ func Index(c echo.Context) error {
 }
 
 func Form(c echo.Context) error {
-	webContext := context.GetWebContext(c)
 	book := new(Book)
 	err := c.Bind(book)
 	coreutil.CheckErr(err)
@@ -41,7 +40,7 @@ func Form(c echo.Context) error {
 	result := echo.Map{}
 
 	if book.BookId != 0 {
-		webContext.DB.First(book, Book{
+		database.DB.First(book, Book{
 			BookId: book.BookId,
 		})
 
@@ -52,8 +51,6 @@ func Form(c echo.Context) error {
 }
 
 func Post(c echo.Context) error {
-	webContext := context.GetWebContext(c)
-
 	book := new(Book)
 	err := c.Bind(book)
 	coreutil.CheckErr(err)
@@ -61,38 +58,34 @@ func Post(c echo.Context) error {
 	book.RegDatetime = time.Now()
 	book.ModDatetime = time.Now()
 	book.UserId = 1
-	webContext.DB.Create(&book)
+	database.DB.Create(&book)
 
 	return c.JSON(http.StatusOK, book)
 }
 
 func Put(c echo.Context) error {
-	webContext := context.GetWebContext(c)
-
 	book := new(Book)
 	err := c.Bind(book)
 	coreutil.CheckErr(err)
 
 	newBook := new(Book)
 
-	webContext.DB.First(newBook, Book{
+	database.DB.First(newBook, Book{
 		BookId: book.BookId,
 	})
 
 	newBook.Name = book.Name
 
-	webContext.DB.Save(newBook)
+	database.DB.Save(newBook)
 	return c.JSON(http.StatusOK, book)
 }
 
-func Remove(c echo.Context) error {
-	webContext := context.GetWebContext(c)
-
+func Delete(c echo.Context) error {
 	book := new(Book)
 	err := c.Bind(book)
 	coreutil.CheckErr(err)
 
-	webContext.DB.Delete(&book, Book{
+	database.DB.Delete(&book, Book{
 		BookId: book.BookId,
 	})
 
@@ -101,13 +94,12 @@ func Remove(c echo.Context) error {
 
 func Get(c echo.Context) error {
 	bookIdValue := c.Param("bookId")
-	webContext := context.GetWebContext(c)
 
 	book := new(Book)
-	bookId, err := strconv.ParseInt(bookIdValue, 10, 64)
+	bookId, err := coreutil.ParseInt(bookIdValue)
 	coreutil.CheckErr(err)
 
-	webContext.DB.First(book, Book{
+	database.DB.First(book, Book{
 		BookId: bookId,
 	})
 

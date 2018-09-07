@@ -1,47 +1,46 @@
 package book
 
 import (
-	"github.com/echo-gorm/context"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
+	"fmt"
+	"github.com/echo-gorm/app"
+	"github.com/echo-gorm/database"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
+	"io/ioutil"
 	"net/http/httptest"
 	"testing"
 )
 
 func TestBook(t *testing.T) {
-	url := "root:rootroot@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=true"
-	db, err := gorm.Open("mysql", url)
-	coreutil.CheckErr(err)
-
-	db.LogMode(true)
-
-	defer db.Close()
-
 	var book Book
-	db.DropTable(&book)
-	db.CreateTable(&book)
+	database.DB.DropTable(&book)
+	database.DB.CreateTable(&book)
 }
 
-func TestPost(t *testing.T) {
-	url := "root:rootroot@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=true"
-	db, err := gorm.Open("mysql", url)
-	coreutil.CheckErr(err)
-	db.LogMode(true)
-	defer db.Close()
-
-	e := echo.New()
-	req := httptest.NewRequest(echo.POST, "/", nil)
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+func TestGet(t *testing.T) {
+	e := app.NewTestEcho()
+	req := httptest.NewRequest(echo.GET, "/book/2", nil)
 	rec := httptest.NewRecorder()
-
 	c := e.NewContext(req, rec)
 	c.SetPath("/book/:bookId")
 	c.SetParamNames("bookId")
-	c.SetParamValues("1")
+	c.SetParamValues("3")
 
-	cc := &context.WebContext{c, db}
+	Get(c)
 
-	Get(cc)
+	bytes, err := ioutil.ReadAll(rec.Body)
+	coreutil.CheckErr(err)
+
+	fmt.Println(string(bytes))
+}
+
+func TestForm(t *testing.T) {
+	e := app.NewTestEcho()
+	req := httptest.NewRequest(echo.GET, "/book/form?bookId=2", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	Form(c)
+
+	fmt.Println(rec.Body.String())
 }
