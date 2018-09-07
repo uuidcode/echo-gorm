@@ -37,7 +37,7 @@ func Echo() *echo.Echo {
 	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetOutput(os.Stdout)
 	logrus.SetFormatter(&logrus.JSONFormatter{})
-	logrusLogger := logrus.New()
+	logrusLogger := logrus.StandardLogger()
 
 	database.DB.SetLogger(gomlogger.New())
 
@@ -61,5 +61,6 @@ func Echo() *echo.Echo {
 	e.Static("/static", "static")
 	e.File("/favicon.ico", "static/ico/favicon.ico")
 
+	logrusLogger.Debug("Echo")
 	return e
 }
