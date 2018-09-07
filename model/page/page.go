@@ -24,8 +24,8 @@ func NewWithContext(c echo.Context, total int64) *Page {
 	return NewWithLimitAndItemCount(p, total, 10, 10)
 }
 
-func New(p int64, total int64, itmeCount int64) *Page {
-	return NewWithLimitAndItemCount(p, total, 10, itmeCount)
+func New(p int64, total int64, itemCount int64) *Page {
+	return NewWithLimitAndItemCount(p, total, 10, itemCount)
 }
 
 func NewWithLimitAndItemCount(p int64, total int64, limit int64, itemCount int64) *Page {
