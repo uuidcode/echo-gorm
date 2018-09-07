@@ -41,15 +41,6 @@ func NewWithLimitAndItemCount(p int64, total int64, limit int64, itemCount int64
 	item.Total = total
 	totalPage := int64(math.Ceil(float64(total) / float64(limit)))
 
-	if p > itemCount {
-		item.Previous = true
-	} else {
-		item.Previous = false
-	}
-
-	item.Previous = p > itemCount
-	item.Next = totalPage > ((p+itemCount)/itemCount)*itemCount
-
 	var list []int64
 
 	startPage := ((p - 1) / itemCount) * itemCount
@@ -61,6 +52,9 @@ func NewWithLimitAndItemCount(p int64, total int64, limit int64, itemCount int64
 			list = append(list, currentP)
 		}
 	}
+
+	item.Previous = p > itemCount
+	item.Next = totalPage > ((p+itemCount)/itemCount)*itemCount
 
 	if item.Previous {
 		item.PreviousPage = list[0] - itemCount
