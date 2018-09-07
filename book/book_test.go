@@ -19,7 +19,7 @@ func TestBook(t *testing.T) {
 
 func TestGet(t *testing.T) {
 	e := app.TestEcho()
-	req := httptest.NewRequest(echo.GET, "/book/2", nil)
+	req := httptest.NewRequest(echo.GET, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/book/:bookId")
