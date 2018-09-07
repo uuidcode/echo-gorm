@@ -2,6 +2,7 @@ package book
 
 import (
 	"github.com/echo-gorm/database"
+	"github.com/echo-gorm/util"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
 	"net/http"
@@ -23,7 +24,8 @@ func (Book) TableName() string {
 func Index(c echo.Context) error {
 	var bookList []Book
 
-	database.DB.Find(&bookList)
+	offset, limit := util.GetOffsetAndLimit(c)
+	database.DB.Offset(offset).Limit(limit).Find(&bookList)
 
 	c.Logger().Debug(coreutil.ToJson(bookList))
 
