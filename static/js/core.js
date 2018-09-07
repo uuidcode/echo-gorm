@@ -10,10 +10,9 @@ var core = {
     },
 
     showModal: function (option) {
-        var url = option.url || option.$target.attr('data-url');
-        console.log('url', url);
+        var formUrl = option.url || option.$target.attr('data-form-url');
 
-        $.get(url, function (html) {
+        $.get(formUrl, function (html) {
             $(html).appendTo('body')
                 .modal()
                 .on('hide.bs.modal', function () {
@@ -24,8 +23,8 @@ var core = {
 
     /**
      * buttonSelector: modal를 띄우는 버튼
-     * url: modal html를 출력하는 url
-     *  url이 없으면 button.attr('data-url')를 url로 사용합니다.
+     * formUrl: modal html를 출력하는 url
+     *  formUrl이 없으면 button.attr('data-form-url')를 url로 사용합니다.
      */
     initModal: function (option) {
         option = option || {

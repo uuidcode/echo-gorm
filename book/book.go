@@ -12,7 +12,7 @@ import (
 )
 
 type Book struct {
-	BookId      int64 `gorm:"PRIMARY_KEY"`
+	BookId      int64 `gorm:"PRIMARY_KEY" form:"bookId" query:"bookId"`
 	UserId      int64
 	Name        string
 	RegDatetime time.Time
@@ -35,10 +35,25 @@ func Index(c echo.Context) error {
 }
 
 func Form(c echo.Context) error {
-	return c.Render(http.StatusOK, "book/form.html", echo.Map{})
+	webContext := context.GetWebContext(c)
+	book := new(Book)
+	err := c.Bind(book)
+	coreutil.CheckErr(err)
+
+	result := echo.Map{}
+
+	if book.BookId != 0 {
+		webContext.DB.First(book, Book{
+			BookId: book.BookId,
+		})
+
+		result["book"] = book
+	}
+
+	return c.Render(http.StatusOK, "book/form.html", result)
 }
 
-func getBook(webContext *context.WebContext) Book {
+func getBook(webContext *context.WebContext) *Book {
 	b, err := ioutil.ReadAll(webContext.Request().Body)
 	coreutil.CheckErr(err)
 
@@ -48,10 +63,10 @@ func getBook(webContext *context.WebContext) Book {
 	err = json.Unmarshal(b, &book)
 	coreutil.CheckErr(err)
 
-	return book
+	return &book
 }
 
-func Save(c echo.Context) error {
+func Post(c echo.Context) error {
 	webContext := context.GetWebContext(c)
 	book := getBook(webContext)
 	book.RegDatetime = time.Now()
@@ -59,6 +74,22 @@ func Save(c echo.Context) error {
 	book.UserId = 1
 	webContext.DB.Create(&book)
 
+	return c.JSON(http.StatusOK, book)
+}
+
+func Put(c echo.Context) error {
+	webContext := context.GetWebContext(c)
+	book := getBook(webContext)
+
+	newBook := new(Book)
+
+	webContext.DB.First(newBook, Book{
+		BookId: book.BookId,
+	})
+
+	newBook.Name = book.Name
+
+	webContext.DB.Save(newBook)
 	return c.JSON(http.StatusOK, book)
 }
 

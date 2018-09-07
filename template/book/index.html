@@ -1,7 +1,7 @@
 {{define "content"}}
 <div class="container-fluid" style="margin:10px 0px 10px 0px">
     <button type="button"
-            data-url="/book/form"
+            data-form-url="/book/form"
             class="btn btn-primary openModalButton">Add</button>
 </div>
 <div class="container-fluid">
@@ -11,6 +11,7 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -18,6 +19,14 @@
             <tr>
                 <th scope="row">{{.BookId}}</th>
                 <td>{{.Name}}</td>
+                <td>
+                    <button type="button"
+                            data-type="PUT"
+                            data-value-type="NUMBER"
+                            data-form-url="/book/form?bookId={{.BookId}}"
+                            data-url="/book"
+                            class="btn btn-primary openModalButton">Edit</button>
+                </td>
                 <td>
                     <button type="button"
                             data-type="DELETE"
