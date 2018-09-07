@@ -70,6 +70,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:2b32af4d2a529083275afc192d1067d8126b578c7a9613b26600e4df9c735155"
+  name = "github.com/mgutz/ansi"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9520e82c474b0a04dd04f8a40959027271bab992"
+
+[[projects]]
+  branch = "master"
   digest = "1:dd4b6b584a48d36fdff3301ff9e9e0330a7a2cabeda206be320be64accdca51f"
   name = "github.com/plutov/echo-logrus"
   packages = ["."]
@@ -117,6 +125,14 @@
   revision = "dcecefd839c4193db0d35b88ec65b4c12d360ab0"
 
 [[projects]]
+  digest = "1:39a425f98fb19427061a693fe6bf0683c9bddec4b25b17067e34fdb465e39cb9"
+  name = "github.com/x-cray/logrus-prefixed-formatter"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "bb2702d423886830dee131692131d35648c382e2"
+  version = "v0.5.2"
+
+[[projects]]
   branch = "master"
   digest = "1:42c7e30272119bd61cee83d6448f31bcb408799a5e1802edc53cec1378e19941"
   name = "golang.org/x/crypto"
@@ -158,6 +174,7 @@
     "github.com/plutov/echo-logrus",
     "github.com/sirupsen/logrus",
     "github.com/uuidcode/coreutil",
+    "github.com/x-cray/logrus-prefixed-formatter",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

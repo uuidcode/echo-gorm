@@ -8,11 +8,20 @@ import (
 	"github.com/labstack/echo"
 	"github.com/plutov/echo-logrus"
 	"github.com/sirupsen/logrus"
+	"github.com/x-cray/logrus-prefixed-formatter"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func customHTTPErrorHandler(err error, c echo.Context) {
+	uri := c.Request().RequestURI
+	c.Logger().Debugf(">>> uri: %v", uri)
+
+	if strings.HasSuffix(uri, ".map") {
+		return
+	}
+
 	code := http.StatusInternalServerError
 
 	if he, ok := err.(*echo.HTTPError); ok {
@@ -36,8 +45,8 @@ func TestEcho() *echo.Echo {
 func Echo() *echo.Echo {
 	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetOutput(os.Stdout)
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-	logrusLogger := logrus.StandardLogger()
+	logrus.SetFormatter(&prefixed.TextFormatter{})
+	logger := logrus.StandardLogger()
 
 	database.DB.SetLogger(gomlogger.New())
 
@@ -45,7 +54,7 @@ func Echo() *echo.Echo {
 
 	e.HTTPErrorHandler = customHTTPErrorHandler
 
-	echoLogger := echologrus.Logger{logrusLogger}
+	echoLogger := echologrus.Logger{logger}
 	e.Logger = echoLogger
 	e.Use(echologrus.Hook())
 
@@ -61,6 +70,7 @@ func Echo() *echo.Echo {
 	e.Static("/static", "static")
 	e.File("/favicon.ico", "static/ico/favicon.ico")
 
-	logrusLogger.Debug("Echo")
+	logger.Debug("Echo is ready")
+
 	return e
 }

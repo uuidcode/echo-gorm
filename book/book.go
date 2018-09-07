@@ -85,9 +85,7 @@ func Delete(c echo.Context) error {
 	err := c.Bind(book)
 	coreutil.CheckErr(err)
 
-	database.DB.Delete(&book, Book{
-		BookId: book.BookId,
-	})
+	database.DB.Delete(&book)
 
 	return c.JSON(http.StatusOK, book.BookId)
 }
