@@ -108,13 +108,13 @@ func Get(c echo.Context) error {
 	bookIdValue := c.Param("bookId")
 	webContext := context.GetWebContext(c)
 
-	var book Book
+	book := new(Book)
 	bookId, err := strconv.ParseInt(bookIdValue, 10, 64)
 	coreutil.CheckErr(err)
 
-	webContext.DB.First(&book, Book{
+	webContext.DB.First(book, Book{
 		BookId: bookId,
 	})
 
-	return c.JSON(http.StatusOK, &book)
+	return c.JSON(http.StatusOK, book)
 }
