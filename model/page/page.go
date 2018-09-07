@@ -50,7 +50,7 @@ func NewWithLimitAndItemCount(p int64, total int64, limit int64, itemCount int64
 	item.Previous = p > itemCount
 	item.Next = totalPage > ((p+itemCount)/itemCount)*itemCount
 
-	list := []int64{}
+	var list []int64
 
 	startPage := ((p - 1) / itemCount) * itemCount
 
