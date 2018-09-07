@@ -9,11 +9,11 @@ import (
 )
 
 type Book struct {
-	BookId      int64 `gorm:"PRIMARY_KEY" json:"bookId" form:"bookId" query:"bookId"`
-	UserId      int64
-	Name        string
-	RegDatetime time.Time
-	ModDatetime time.Time
+	BookId      int64     `gorm:"PRIMARY_KEY" json:"bookId" form:"bookId" query:"bookId"`
+	UserId      int64     `json:"bookId" form:"userId" query:"userId"`
+	Name        string    `json:"name" form:"name" query:"name"`
+	RegDatetime time.Time `json:"regDatetime" form:"regDatetime" query:"regDatetime"`
+	ModDatetime time.Time `json:"modDatetime" form:"modDatetime" query:"modDatetime"`
 }
 
 func (Book) TableName() string {

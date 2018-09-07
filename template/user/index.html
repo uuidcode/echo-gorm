@@ -1,0 +1,44 @@
+{{define "content"}}
+<div class="container-fluid" style="margin:10px 0px 10px 0px">
+    <button type="button"
+            data-form-url="/user/form"
+            class="btn btn-primary openModalButton">Add</button>
+</div>
+<div class="container-fluid">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .userList}}
+            <tr>
+                <th scope="row">{{.UserId}}</th>
+                <td>{{.Name}}</td>
+                <td>
+                    <button type="button"
+                            data-type="PUT"
+                            data-value-type="NUMBER"
+                            data-form-url="/user/form?userId={{.UserId}}"
+                            data-url="/user"
+                            class="btn btn-primary openModalButton">Edit</button>
+                </td>
+                <td>
+                    <button type="button"
+                            data-type="DELETE"
+                            data-value-type="NUMBER"
+                            data-url="/user"
+                            data-id-name="userId"
+                            data-id-value="{{.UserId}}"
+                            class="btn btn-primary actionButton">Remove</button>
+                </td>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+</div>
+{{end}}
