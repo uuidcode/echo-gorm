@@ -22,8 +22,9 @@ type Team struct {
 }
 
 type Part struct {
-	Name string
-	Team Team
+	Name        string
+	Team        Team
+	AnotherPart *Part `json:"anotherPart,omitempty"`
 }
 
 func look(item interface{}) {

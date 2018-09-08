@@ -81,3 +81,7 @@ func GetUrlAndRemovePageParam(req *http.Request) string {
 
 	return url
 }
+
+func PrintTypeAndPointer(target interface{}) {
+	fmt.Printf("%T=%p\n", target, &target)
+}
