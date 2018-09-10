@@ -1,11 +1,16 @@
 package test
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/echo-gorm/util"
 	"reflect"
 	"testing"
 )
+
+type Dummy struct {
+	Price int
+}
 
 type Org struct {
 	Name string
@@ -42,4 +47,14 @@ func TestJson(t *testing.T) {
 
 	part3 := Part{}
 	look(part3)
+}
+
+func TestStringToInt(t *testing.T) {
+	text := `{"price":1000}`
+
+	dummy := new(Dummy)
+	err := json.Unmarshal([]byte(text), dummy)
+	util.CheckErr(err)
+
+	fmt.Println(util.ToJson(dummy))
 }
