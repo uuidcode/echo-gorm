@@ -16,13 +16,13 @@ func init() {
 }
 
 func Begin(currentDB *gorm.DB) *gorm.DB {
-	tx := currentDB.Begin()
+	db := currentDB.Begin()
 
-	if tx.Error != nil {
-		panic(tx.Error)
+	if db.Error != nil {
+		panic(db.Error)
 	}
 
-	return tx
+	return db
 }
 
 func Save(currentDB *gorm.DB, model interface{}) *gorm.DB {
