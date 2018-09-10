@@ -12,7 +12,7 @@ import (
 
 type Book struct {
 	BookId      int64     `gorm:"PRIMARY_KEY" json:"bookId" form:"bookId" query:"bookId"`
-	UserId      int64     `json:"bookId" form:"userId" query:"userId"`
+	UserId      int64     `json:"userId" form:"userId" query:"userId"`
 	Name        string    `json:"name" form:"name" query:"name"`
 	RegDatetime time.Time `json:"regDatetime" form:"regDatetime" query:"regDatetime"`
 	ModDatetime time.Time `json:"modDatetime" form:"modDatetime" query:"modDatetime"`
@@ -66,12 +66,31 @@ func Form(c echo.Context) error {
 func Post(c echo.Context) error {
 	book := new(Book)
 	err := c.Bind(book)
-	coreutil.CheckErr(err)
+	util.CheckErr(err)
 
 	book.RegDatetime = time.Now()
 	book.ModDatetime = time.Now()
 	book.UserId = 1
-	database.DB.Create(&book)
+
+	tx := database.DB.Begin()
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	err = tx.Save(&book).Error
+
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = tx.Commit().Error
+
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
 
 	return c.JSON(http.StatusOK, book)
 }

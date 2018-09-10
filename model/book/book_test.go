@@ -9,6 +9,7 @@ import (
 	"github.com/uuidcode/coreutil"
 	"io/ioutil"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 )
@@ -54,6 +55,21 @@ func TestForm(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	Form(c)
+
+	fmt.Println(rec.Body.String())
+}
+
+func TestPost(t *testing.T) {
+	e := app.TestEcho()
+	json := `{"name":"Hello"}`
+
+	req := httptest.NewRequest(echo.POST, "/book", strings.NewReader(json))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+
+	c := e.NewContext(req, rec)
+
+	Post(c)
 
 	fmt.Println(rec.Body.String())
 }
