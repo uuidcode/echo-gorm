@@ -7,9 +7,9 @@
         {{if .page.Previous}}
         <li class="page-item"><a class="page-link" href="{{$url}}p={{$previousPage}}">Previous</a></li>
         {{end}}
-        {{range $index, $element := .page.List}}
-            <li class="page-item {{if eq $element $currentPage}}active{{end}}">
-                <a class="page-link" href="{{$url}}p={{$element}}">{{$element}}</a>
+        {{range $index, $pageNumber := .page.PageList}}
+            <li class="page-item {{if eq $pageNumber $currentPage}}active{{end}}">
+                <a class="page-link" href="{{$url}}p={{$pageNumber}}">{{$pageNumber}}</a>
             </li>
         {{end}}
         {{if .page.Next}}

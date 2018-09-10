@@ -33,7 +33,7 @@ func Index(c echo.Context) error {
 	database.MainDB.Model(book).Count(&totalCount)
 
 	p := page.NewWithContext(c, totalCount)
-	database.MainDB.Offset(p.Offset).Limit(p.Limit).Find(&bookList)
+	database.MainDB.Offset(p.ItemOffset).Limit(p.ItemLimit).Find(&bookList)
 
 	c.Logger().Debug(coreutil.ToJson(bookList))
 

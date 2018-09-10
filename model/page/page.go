@@ -11,12 +11,12 @@ type Page struct {
 	Next         bool
 	PreviousPage int64
 	NextPage     int64
-	List         []int64
-	Total        int64
+	TotalItem    int64
+	ItemLimit    int64
+	ItemOffset   int64
+	PageList     []int64
 	CurrentPage  int64
-	Limit        int64
-	ItemCount    int64
-	Offset       int64
+	PageLimit    int64
 }
 
 func NewWithContext(c echo.Context, total int64) *Page {
@@ -28,24 +28,24 @@ func New(p int64, total int64, itemCount int64) *Page {
 	return NewWithLimitAndItemCount(p, total, 10, itemCount)
 }
 
-func NewWithLimitAndItemCount(p int64, total int64, limit int64, itemCount int64) *Page {
-	if p < 1 {
-		p = 1
+func NewWithLimitAndItemCount(currentPage int64, totalItem int64, itemLimit int64, pageLimit int64) *Page {
+	if currentPage < 1 {
+		currentPage = 1
 	}
 
 	item := Page{}
-	item.Limit = limit
-	item.ItemCount = itemCount
-	item.CurrentPage = p
-	item.Offset = (p - 1) * limit
-	item.Total = total
-	totalPage := int64(math.Ceil(float64(total) / float64(limit)))
+	item.ItemLimit = itemLimit
+	item.PageLimit = pageLimit
+	item.CurrentPage = currentPage
+	item.ItemOffset = (currentPage - 1) * itemLimit
+	item.TotalItem = totalItem
+	totalPage := int64(math.Ceil(float64(totalItem) / float64(itemLimit)))
 
 	var list []int64
 
-	startPage := ((p - 1) / itemCount) * itemCount
+	startPage := ((currentPage - 1) / pageLimit) * pageLimit
 
-	for i := int64(1); i <= itemCount; i++ {
+	for i := int64(1); i <= pageLimit; i++ {
 		currentP := startPage + i
 
 		if currentP <= totalPage {
@@ -53,18 +53,18 @@ func NewWithLimitAndItemCount(p int64, total int64, limit int64, itemCount int64
 		}
 	}
 
-	item.Previous = p > itemCount
-	item.Next = totalPage > ((p+itemCount)/itemCount)*itemCount
+	item.Previous = currentPage > pageLimit
+	item.Next = totalPage > ((currentPage+pageLimit)/pageLimit)*pageLimit
 
 	if item.Previous {
-		item.PreviousPage = list[0] - itemCount
+		item.PreviousPage = list[0] - pageLimit
 	}
 
 	if item.Next {
 		item.NextPage = list[len(list)-1] + 1
 	}
 
-	item.List = list
+	item.PageList = list
 
 	return &item
 }

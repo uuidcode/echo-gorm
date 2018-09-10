@@ -13,8 +13,8 @@ import (
 
 func TestUser(t *testing.T) {
 	var user User
-	database.db.DropTable(&user)
-	database.db.CreateTable(&user)
+	database.MainDB.DropTable(&user)
+	database.MainDB.CreateTable(&user)
 }
 
 func TestGet(t *testing.T) {
