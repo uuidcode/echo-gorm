@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/sirupsen/logrus"
 	"github.com/x-cray/logrus-prefixed-formatter"
+	"html/template"
 	"net/http"
 	"os"
 	"strings"
@@ -63,6 +64,12 @@ func Echo() *echo.Echo {
 		Extension:    ".html",
 		Master:       "layouts/master",
 		DisableCache: true,
+		Funcs: template.FuncMap{
+			"hello": func(p int64) string {
+				result := fmt.Sprintf("<script>alert(1)</script>%v", p)
+				return result
+			},
+		},
 	}
 
 	e.Renderer = echotemplate.New(templateConfig)
