@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/echo-gorm/app"
+	"github.com/echo-gorm/middleware"
 	"github.com/echo-gorm/model/book"
 	"github.com/echo-gorm/model/user"
 )
@@ -23,5 +24,6 @@ func main() {
 	e.PUT("/user", user.Put)
 	e.DELETE("/user", user.Delete)
 
+	e.Use(middleware.Hello)
 	e.Start(":17004")
 }
