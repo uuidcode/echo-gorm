@@ -48,7 +48,7 @@ func Echo() *echo.Echo {
 	logrus.SetFormatter(&prefixed.TextFormatter{})
 	logger := logrus.StandardLogger()
 
-	database.DB.SetLogger(gomlogger.New())
+	database.MainDB.SetLogger(gomlogger.New())
 
 	e := echo.New()
 

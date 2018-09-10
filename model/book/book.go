@@ -3,6 +3,7 @@ package book
 import (
 	"github.com/echo-gorm/database"
 	"github.com/echo-gorm/model/page"
+	"github.com/echo-gorm/model/user"
 	"github.com/echo-gorm/util"
 	"github.com/labstack/echo"
 	"github.com/uuidcode/coreutil"
@@ -29,10 +30,10 @@ func Index(c echo.Context) error {
 	util.CheckErr(err)
 
 	var totalCount int64
-	database.DB.Model(book).Count(&totalCount)
+	database.MainDB.Model(book).Count(&totalCount)
 
 	p := page.NewWithContext(c, totalCount)
-	database.DB.Offset(p.Offset).Limit(p.Limit).Find(&bookList)
+	database.MainDB.Offset(p.Offset).Limit(p.Limit).Find(&bookList)
 
 	c.Logger().Debug(coreutil.ToJson(bookList))
 
@@ -53,7 +54,7 @@ func Form(c echo.Context) error {
 	result := echo.Map{}
 
 	if book.BookId != 0 {
-		database.DB.First(book, Book{
+		database.MainDB.First(book, Book{
 			BookId: book.BookId,
 		})
 
@@ -65,32 +66,25 @@ func Form(c echo.Context) error {
 
 func Post(c echo.Context) error {
 	book := new(Book)
+	user := new(user.User)
 	err := c.Bind(book)
 	util.CheckErr(err)
 
+	tx := database.Begin(database.MainDB)
+
+	user.RegDatetime = time.Now()
+	user.ModDatetime = time.Now()
+	user.Name = util.CreateUuid()
+	database.Save(tx, &user)
+
+	c.Logger().Debug(">>> user:", util.ToJson(user))
+
 	book.RegDatetime = time.Now()
 	book.ModDatetime = time.Now()
-	book.UserId = 1
+	book.UserId = user.UserId
 
-	tx := database.DB.Begin()
-
-	if tx.Error != nil {
-		return tx.Error
-	}
-
-	err = tx.Save(&book).Error
-
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	err = tx.Commit().Error
-
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
+	database.Save(tx, &book)
+	database.Commit(tx)
 
 	c.Logger().Debug(util.ToJson(book))
 
@@ -104,13 +98,13 @@ func Put(c echo.Context) error {
 
 	newBook := new(Book)
 
-	database.DB.First(newBook, Book{
+	database.MainDB.First(newBook, Book{
 		BookId: book.BookId,
 	})
 
 	newBook.Name = book.Name
 
-	database.DB.Save(newBook)
+	database.MainDB.Save(newBook)
 	return c.JSON(http.StatusOK, book)
 }
 
@@ -119,7 +113,7 @@ func Delete(c echo.Context) error {
 	err := c.Bind(book)
 	coreutil.CheckErr(err)
 
-	database.DB.Delete(&book)
+	database.MainDB.Delete(&book)
 
 	return c.JSON(http.StatusOK, book.BookId)
 }
@@ -131,7 +125,7 @@ func Get(c echo.Context) error {
 	bookId, err := coreutil.ParseInt(bookIdValue)
 	coreutil.CheckErr(err)
 
-	database.DB.First(book, Book{
+	database.MainDB.First(book, Book{
 		BookId: bookId,
 	})
 

@@ -22,7 +22,7 @@ func (User) TableName() string {
 func Index(c echo.Context) error {
 	var userList []User
 
-	database.DB.Find(&userList)
+	database.MainDB.Find(&userList)
 
 	c.Logger().Debug(coreutil.ToJson(userList))
 
@@ -39,7 +39,7 @@ func Form(c echo.Context) error {
 	result := echo.Map{}
 
 	if user.UserId != 0 {
-		database.DB.First(user, User{
+		database.MainDB.First(user, User{
 			UserId: user.UserId,
 		})
 
@@ -56,7 +56,7 @@ func Post(c echo.Context) error {
 
 	user.RegDatetime = time.Now()
 	user.ModDatetime = time.Now()
-	database.DB.Create(&user)
+	database.MainDB.Create(&user)
 
 	return c.JSON(http.StatusOK, user)
 }
@@ -68,13 +68,13 @@ func Put(c echo.Context) error {
 
 	newUser := new(User)
 
-	database.DB.First(newUser, User{
+	database.MainDB.First(newUser, User{
 		UserId: user.UserId,
 	})
 
 	newUser.Name = user.Name
 
-	database.DB.Save(newUser)
+	database.MainDB.Save(newUser)
 	return c.JSON(http.StatusOK, user)
 }
 
@@ -83,7 +83,7 @@ func Delete(c echo.Context) error {
 	err := c.Bind(user)
 	coreutil.CheckErr(err)
 
-	database.DB.Delete(&user)
+	database.MainDB.Delete(&user)
 
 	return c.JSON(http.StatusOK, user.UserId)
 }
@@ -95,7 +95,7 @@ func Get(c echo.Context) error {
 	userId, err := coreutil.ParseInt(userIdValue)
 	coreutil.CheckErr(err)
 
-	database.DB.First(user, User{
+	database.MainDB.First(user, User{
 		UserId: userId,
 	})
 

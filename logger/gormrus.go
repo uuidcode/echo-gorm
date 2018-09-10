@@ -21,10 +21,12 @@ type gormLogger struct {
 
 func (l *gormLogger) Print(values ...interface{}) {
 	entry := l.logger.WithField("name", l.name)
+
 	if len(values) > 1 {
 		level := values[0]
 		source := values[1]
 		entry = l.logger.WithField("source", source)
+
 		if level == "sql" {
 			duration := values[2]
 			// sql
