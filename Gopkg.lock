@@ -195,6 +195,7 @@
     "github.com/go-sql-driver/mysql",
     "github.com/jinzhu/gorm",
     "github.com/labstack/echo",
+    "github.com/labstack/gommon/log",
     "github.com/plutov/echo-logrus",
     "github.com/satori/go.uuid",
     "github.com/sirupsen/logrus",

@@ -92,6 +92,8 @@ func Post(c echo.Context) error {
 		return err
 	}
 
+	c.Logger().Debug(util.ToJson(book))
+
 	return c.JSON(http.StatusOK, book)
 }
 

@@ -6,7 +6,9 @@ import (
 	"github.com/labstack/echo"
 	"github.com/satori/go.uuid"
 	"net/http"
+	"path"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -84,4 +86,15 @@ func GetUrlAndRemovePageParam(req *http.Request) string {
 
 func PrintTypeAndPointer(target interface{}) {
 	fmt.Printf("%T=%p\n", target, &target)
+}
+
+func RuntimeInfo() interface{} {
+	pc, file, line, ok := runtime.Caller(2)
+
+	if ok {
+		funcName := runtime.FuncForPC(pc).Name()
+		return fmt.Sprintf("%s:%v:%s", path.Base(file), line, path.Base(funcName))
+	}
+
+	return ""
 }
